@@ -34,11 +34,11 @@ import java.util.List;
 
 
 public class PolarPlotTest extends Application {
-    private XYSeries<XYChartItem> xySeries1;
-
     private PolarPlot<XYChartItem> polarPlot;
+    private Legend legend;
 
-    @Override public void init() {
+    @Override
+    public void init() {
         List<XYChartItem> xyItems1 = new ArrayList<>();
         xyItems1.add(new XYChartItem(0.0, -18.0));
         xyItems1.add(new XYChartItem(25.0, -18.0));
@@ -84,26 +84,16 @@ public class PolarPlotTest extends Application {
         xyItems2.add(new XYChartItem(228, -50));
         xyItems2.add(new XYChartItem(300, -15));
 
-        xySeries1 = new XYSeries(xyItems1, ChartType.INTERPOLATE_POLAR,
+        final var xySeries1 = new XYSeries(xyItems1, ChartType.INTERPOLATE_POLAR,
            Color.TRANSPARENT, Color.DODGERBLUE);
-        //xySeries1.setShowPoints(false);
-//        xySeries1.setStroke(Color.rgb(90, 90, 90));
-//        xySeries1.setSymbolStroke(Color.LIME);
-//        xySeries1.setSymbolFill(Color.GREEN);
         xySeries1.setSymbol(Symbol.NONE);
 
         final var xySeries2 = new XYSeries(xyItems2, ChartType.INTERPOLATE_POLAR,
            Color.TRANSPARENT, Color.GREEN);
-        //xySeries1.setShowPoints(false);
-//        xySeries1.setStroke(Color.rgb(90, 90, 90));
-//        xySeries1.setSymbolStroke(Color.LIME);
-//        xySeries1.setSymbolFill(Color.GREEN);
         xySeries2.setSymbol(Symbol.NONE);
 
 
-        XYPane polarPane = new XYPane(xySeries1, xySeries2);
-//        polarPane.setLowerBoundY(polarPane.getDataMinY());
-//        polarPane.setUpperBoundY(polarPane.getDataMaxY());
+        final var polarPane = new XYPane(xySeries1, xySeries2);
         polarPane.setLowerBoundY(-100);
         polarPane.setUpperBoundY(20);
         polarPane.setPolarTickStep(PolarTickStep.THIRTY);
@@ -113,33 +103,33 @@ public class PolarPlotTest extends Application {
         polarPane.setYPolarRingValues(List.of(-75.0, -50.0, -25.0, 0.0, 20.0));
 
         polarPlot = new PolarPlot<>(polarPane);
-    }
-
-    @Override public void start(Stage stage) {
-        BorderPane pane = new BorderPane();
-        pane.setCenter(polarPlot);
 
         final var legendItems1 = new LegendItem("xyItems1", Color.DODGERBLUE);
         final var legendItems2 = new LegendItem("xyItems2", Color.GREEN);
-        final var legend = new Legend();
+        legend = new Legend();
         legend.setLegendItems(legendItems1, legendItems2);
         legend.setOrientation(Orientation.VERTICAL);
         legend.setPrefHeight(50);
+    }
+
+    @Override
+    public void start(Stage stage) {
+        final var pane = new BorderPane();
+        pane.setCenter(polarPlot);
 
         pane.setBottom(legend);
 
         pane.setPadding(new Insets(10));
 
-        Scene scene = new Scene(new StackPane(pane));
+        final var scene = new Scene(new StackPane(pane));
 
         stage.setTitle("Polar Chart");
         stage.setScene(scene);
         stage.show();
-
-        //timer.start();
     }
 
-    @Override public void stop() {
+    @Override
+    public void stop() {
         System.exit(0);
     }
 

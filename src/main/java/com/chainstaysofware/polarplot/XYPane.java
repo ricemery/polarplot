@@ -814,7 +814,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
 
       final var steps = Math.floor(theta2 - theta1);
       if (theta1 != theta2) {
-         for (double i = 1; i < steps; i = i + .25) {
+         for (double i = 1; i < steps; i = i + 1) {
             final var theta = theta1 + i;
             list.add(interpolate(r1, theta1, r2, theta2, theta));
          }
