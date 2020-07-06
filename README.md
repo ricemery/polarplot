@@ -7,3 +7,6 @@ Major changes from HanSolo Charts:
 * Only Polar Plot and Legend included.
 * Interpolation of polar coordinates is used to smooth between points.
 * Series do not have to be closed.
+
+
+<img src="https://i.imgur.com/nfeiZky.png">
