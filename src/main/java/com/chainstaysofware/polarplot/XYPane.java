@@ -42,6 +42,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.RadialGradient;
+import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -679,6 +680,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       }
       ctx.setLineWidth(series.getStrokeWidth() > -1 ? series.getStrokeWidth() : size * 0.0025);
       ctx.setStroke(series.getStroke());
+      ctx.setLineJoin(StrokeLineJoin.ROUND);
 
       T item = series.getItems().get(0);
       Point[] points = null;
