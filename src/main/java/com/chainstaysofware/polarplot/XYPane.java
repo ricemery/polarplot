@@ -694,7 +694,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
          final var interpolatedPoints = buildPoints((List<T>) interpolatedItems, xCenter, yCenter, yLowerBound,
             yRange, range, offset);
 
-         if (isClosed(series)) {
+         if (series.isWithWrapping()) {
             ctx.beginPath();
             ctx.moveTo(interpolatedPoints[0].getX(), interpolatedPoints[0].getY());
             for (Point point : interpolatedPoints) {
@@ -734,16 +734,6 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
          }
       }
 
-   }
-
-   private boolean isClosed(final XYSeries<T> series) {
-      final var items = series.getItems();
-      final var size = items.size();
-      // TODO: It would be better to disambiguate the X values and compare.
-      return size > 2
-         && items.get(0).getX() == 0
-         && items.get(size - 1).getX() == 360
-         && items.get(0).getY() == items.get(size - 1).getY();
    }
 
    private Point[] buildPoints(XYSeries<T> series,

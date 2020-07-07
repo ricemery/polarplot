@@ -87,11 +87,11 @@ public class PolarPlotTest extends Application {
         final var xySeries1 = new XYSeries(xyItems1, ChartType.INTERPOLATE_POLAR,
            Color.TRANSPARENT, Color.DODGERBLUE);
         xySeries1.setSymbol(Symbol.NONE);
+        xySeries1.setWithWrapping(true);
 
         final var xySeries2 = new XYSeries(xyItems2, ChartType.INTERPOLATE_POLAR,
            Color.TRANSPARENT, Color.GREEN);
         xySeries2.setSymbol(Symbol.NONE);
-
 
         final var polarPane = new XYPane(xySeries1, xySeries2);
         polarPane.setLowerBoundY(-100);
