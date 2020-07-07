@@ -52,8 +52,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static com.chainstaysoftware.polarplot.tools.Helper.clamp;
-
 
 /**
  * Created by hansolo on 16.07.17.
@@ -834,15 +832,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       final double yRange = getRangeY();
       final double numSectors = 360.0 / angleStep;
 
-      // draw star lines
-      ctx.save();
-      ctx.setStroke(Color.LIGHTGRAY);
-      for (int i = 0; i < numSectors; i++) {
-         ctx.strokeLine(xCenter, 0.05 * size, xCenter, 0.5 * size);
-         Helper.rotateCtx(ctx, xCenter, yCenter, angleStep);
-      }
-      ctx.restore();
-
+      drawStarLines(angleStep, xCenter, yCenter, numSectors);
       drawConcentricRings(circleSize, yCenter, getLowerBoundY(), yRange, range, offset);
 
       // draw threshold circle
@@ -851,19 +841,18 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
             1, getThresholdYColor());
       }
 
-      ctx.setTextAlign(TextAlignment.CENTER);
-      ctx.setTextBaseline(VPos.CENTER);
-      ctx.setFill(Color.BLACK);
+      drawAxisText(angleStep, xCenter, yCenter, numSectors, useRadians);
+   }
 
-      // draw axis text
+   private void drawStarLines(double angleStep,
+                              double xCenter,
+                              double yCenter,
+                              double numSectors) {
+      // draw star lines
       ctx.save();
-      ctx.setFont(Fonts.latoRegular(0.025 * size));
+      ctx.setStroke(Color.LIGHTGRAY);
       for (int i = 0; i < numSectors; i++) {
-         final var angle = useRadians
-            ? Math.toRadians(i * angleStep)
-            : i * angleStep;
-         final var text = FormatAngle.format(angle, useRadians);
-         ctx.fillText(text, xCenter, size * 0.02);
+         ctx.strokeLine(xCenter, 0.05 * size, xCenter, 0.5 * size);
          Helper.rotateCtx(ctx, xCenter, yCenter, angleStep);
       }
       ctx.restore();
@@ -1008,6 +997,29 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
             ctx.fillOval(X - halfSymbolSize, Y - halfSymbolSize, symbolSize, symbolSize);
             ctx.strokeOval(X - halfSymbolSize, Y - halfSymbolSize, symbolSize, symbolSize);
             break;
+      }
+      ctx.restore();
+   }
+
+   private void drawAxisText(double angleStep,
+                             double xCenter,
+                             double yCenter,
+                             double numSectors,
+                             boolean useRadians) {
+      ctx.setTextAlign(TextAlignment.CENTER);
+      ctx.setTextBaseline(VPos.CENTER);
+      ctx.setFill(Color.BLACK);
+
+      // draw axis text
+      ctx.save();
+      ctx.setFont(Fonts.latoRegular(0.025 * size));
+      for (int i = 0; i < numSectors; i++) {
+         final var angle = useRadians
+            ? Math.toRadians(i * angleStep)
+            : i * angleStep;
+         final var text = FormatAngle.format(angle, useRadians);
+         ctx.fillText(text, xCenter, size * 0.02);
+         Helper.rotateCtx(ctx, xCenter, yCenter, angleStep);
       }
       ctx.restore();
    }
