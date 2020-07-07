@@ -1,4 +1,4 @@
-module polarplot {
+module com.chainstaysoftware.polarplot {
 
     // Java
     requires java.base;
@@ -10,5 +10,5 @@ module polarplot {
     requires javafx.controls;
     requires javafx.swing;
 
-    exports com.chainstaysofware.polarplot;
+    exports com.chainstaysoftware.polarplot;
 }

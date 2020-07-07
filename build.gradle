@@ -58,9 +58,14 @@ dependencies {
     implementation "org.openjfx:javafx-graphics:11:$platform"
     implementation "org.openjfx:javafx-controls:11:$platform"
     implementation "org.openjfx:javafx-swing:11:$platform"
-}
 
-mainClassName = "$moduleName/com.chainstaysoftware.polarplot.Demo"
+    testCompile 'org.junit.jupiter:junit-jupiter:5.6.2'
+    testCompile 'org.junit.platform:junit-platform-commons:1.6.2'
+    testImplementation 'org.junit.platform:junit-platform-commons:1.6.2'
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.2"
+    testCompile "org.assertj:assertj-core:3.11.1"
+    test.useJUnitPlatform()
+}
 
 jar {
     manifest {
@@ -82,7 +87,6 @@ jar {
         )
     }
 }
-
 
 // create one jar for the javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
