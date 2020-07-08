@@ -11,4 +11,5 @@ module com.chainstaysoftware.polarplot {
     requires javafx.swing;
 
     exports com.chainstaysoftware.polarplot;
+    exports com.chainstaysoftware.polarplot.series;
 }

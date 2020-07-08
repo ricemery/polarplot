@@ -38,7 +38,6 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -65,15 +64,14 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
    private static final double MAXIMUM_HEIGHT = 4096;
    private static final double MIN_SYMBOL_SIZE = 2;
    private static final double MAX_SYMBOL_SIZE = 6;
-   private static final int SUB_DIVISIONS = 24;
    private static double aspectRatio;
-   private boolean keepAspect;
+   private final List<XYSeries<T>> listOfSeries;
+   private final boolean keepAspect;
    private double size;
    private double width;
    private double height;
    private Paint _chartBackground;
    private ObjectProperty<Paint> chartBackground;
-   private List<XYSeries<T>> listOfSeries;
    private Canvas canvas;
    private GraphicsContext ctx;
    private double scaleX;
@@ -89,7 +87,6 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
    private double _upperBoundY;
    private DoubleProperty upperBoundY;
    private boolean referenceZero;
-   private Tooltip tooltip;
    private double _thresholdY;
    private DoubleProperty thresholdY;
    private boolean _thresholdYVisible;
@@ -103,24 +100,24 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
 
 
    // ******************** Constructors **************************************
-   public XYPane(final XYSeries<T>... SERIES) {
-      this(Color.TRANSPARENT, 1, SERIES);
+   public XYPane(final XYSeries<T>... series) {
+      this(Color.TRANSPARENT, 1, series);
    }
 
-   public XYPane(final int BANDS, final XYSeries<T>... SERIES) {
-      this(Color.TRANSPARENT, BANDS, SERIES);
+   public XYPane(final int bands, final XYSeries<T>... series) {
+      this(Color.TRANSPARENT, bands, series);
    }
 
-   public XYPane(final Paint BACKGROUND, final int BANDS, final XYSeries<T>... SERIES) {
+   public XYPane(final Paint background, final int bands, final XYSeries<T>... series) {
       getStylesheets().add(XYPane.class.getResource("polarplot.css").toExternalForm());
       aspectRatio = PREFERRED_HEIGHT / PREFERRED_WIDTH;
       keepAspect = false;
-      _chartBackground = BACKGROUND;
-      listOfSeries = FXCollections.observableArrayList(SERIES);
+      _chartBackground = background;
+      listOfSeries = FXCollections.observableArrayList(series);
       scaleX = 1;
       scaleY = 1;
       symbolSize = 2;
-      noOfBands = Helper.clamp(1, 5, BANDS);
+      noOfBands = Helper.clamp(1, 5, bands);
       _lowerBoundX = 0;
       _upperBoundX = 100;
       _lowerBoundY = 0;
