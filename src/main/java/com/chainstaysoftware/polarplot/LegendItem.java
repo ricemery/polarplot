@@ -257,8 +257,7 @@ public class LegendItem extends Region {
             double requiredWidth = height + height * 0.22 + textDim.getWidth();
             pane.setMaxSize(requiredWidth, height);
             pane.setPrefSize(requiredWidth, height);
-            pane.relocate((getWidth() - requiredWidth) * 0.5, (getHeight() - height) * 0.5);
-
+            
             canvas.setWidth(requiredWidth);
             canvas.setHeight(height);
 
