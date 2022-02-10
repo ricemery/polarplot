@@ -11,8 +11,11 @@ public final class Interpolator {
    /**
     * Interpolate between points in list so that there are points at 1 degree increments.
     * Assumes input points are in degrees.
+    * Wrap indicates if points should be interpolated between the last and first points
+    * to loop around.
     */
-   public static List<XYChartItem> interpolate(final List<XYChartItem> points) {
+   public static List<XYChartItem> interpolate(final List<XYChartItem> points,
+                                               final boolean wrap) {
       if (points.size() < 2) {
          return points;
       }
@@ -22,14 +25,27 @@ public final class Interpolator {
          list.addAll(interpolate(points.get(i), points.get(i + 1)));
       }
 
+      if (wrap) {
+         final var firstPoint = points.get(0);
+         // rewrite the first point to have an angle greater than the end point.
+         // Code assumes first point and last point in points are from [0..360]
+         final var firstPointDisambiguated = new XYChartItem(firstPoint.getX() + 360, firstPoint.getY(),
+            firstPoint.getName(), firstPoint.getFill(), firstPoint.getStroke(),
+            firstPoint.getSymbol());
+         list.addAll(interpolate(points.get(points.size() - 1), firstPointDisambiguated));
+      }
+
       return list;
    }
 
    /**
     * Interpolate between points in list so that there are points at 1 degree increments.
     * Assumes input points are in radians.
+    * Wrap indicates if points should be interpolated between the last and first points
+    * to loop around.
     */
-   public static List<XYChartItem> interpolateRadians(final List<XYChartItem> points) {
+   public static List<XYChartItem> interpolateRadians(final List<XYChartItem> points,
+                                                      final boolean wrap) {
       if (points.size() < 2) {
          return points;
       }
@@ -37,6 +53,16 @@ public final class Interpolator {
       final var list = new LinkedList<XYChartItem>();
       for (int i = 0; i < points.size() - 1; i++) {
          list.addAll(interpolateRadians(points.get(i), points.get(i + 1)));
+      }
+
+      if (wrap) {
+         final var firstPoint = points.get(0);
+         // rewrite the first point to have an angle greater than the end point.
+         // Code assumes first point and last point in points are from [0..2pi]
+         final var firstPointDisambiguated = new XYChartItem(firstPoint.getX() + (2 * Math.PI), firstPoint.getY(),
+            firstPoint.getName(), firstPoint.getFill(), firstPoint.getStroke(),
+            firstPoint.getSymbol());
+         list.addAll(interpolateRadians(points.get(points.size() - 1), firstPointDisambiguated));
       }
 
       return list;

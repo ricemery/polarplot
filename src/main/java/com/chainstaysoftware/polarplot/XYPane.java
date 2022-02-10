@@ -689,12 +689,14 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
          //noinspection unchecked
          points = buildPoints(series, xCenter, yCenter, yLowerBound,
             yRange, range, offset, useRadians);
-         final var interpolatedItems = interpolate(series, useRadians);
+         final var withWrapping = series.isWithWrapping();
+         final var interpolatedItems = interpolate(series,
+            useRadians, withWrapping);
          //noinspection unchecked
          final var interpolatedPoints = buildPoints((List<T>) interpolatedItems, xCenter, yCenter, yLowerBound,
             yRange, range, offset, useRadians);
 
-         if (series.isWithWrapping()) {
+         if (withWrapping) {
             ctx.beginPath();
             ctx.moveTo(interpolatedPoints[0].getX(), interpolatedPoints[0].getY());
             for (Point point : interpolatedPoints) {
@@ -724,11 +726,13 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       }
    }
 
-   private List<XYChartItem> interpolate(XYSeries<T> series, boolean useRadians) {
+   private List<XYChartItem> interpolate(XYSeries<T> series,
+                                         boolean useRadians,
+                                         boolean wrap) {
       //noinspection unchecked
       return useRadians
-         ? Interpolator.interpolateRadians((List<XYChartItem>) series.getItems())
-         : Interpolator.interpolate((List<XYChartItem>) series.getItems());
+         ? Interpolator.interpolateRadians((List<XYChartItem>) series.getItems(), wrap)
+         : Interpolator.interpolate((List<XYChartItem>) series.getItems(), wrap);
    }
 
    private Point[] buildPoints(XYSeries<T> series,
@@ -774,7 +778,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       Point[] points = new Point[numOfItems];
 
       double r1 = (yCenter - (yCenter - offset - ((item.getY() - yLowerBound) / yRange) * range));
-      double phi = Helper.clamp(0.0, Math.toRadians(360.0), item.getX());
+      double phi = Helper.clamp(0.0, Math.toRadians(360.0), item.getX() % (2 * Math.PI));
       double x = xCenter + (-Math.sin(radAngle + phi) * r1);
       double y = yCenter + (+Math.cos(radAngle + phi) * r1);
       points[0] = new Point(x, y);
@@ -782,7 +786,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       for (int i = 1; i < numOfItems; i++) {
          item = items.get(i);
          r1 = (yCenter - (yCenter - offset - ((item.getY() - yLowerBound) / yRange) * range));
-         phi = Helper.clamp(0.0, Math.toRadians(360.0), item.getX());
+         phi = Helper.clamp(0.0, Math.toRadians(360.0), item.getX() % (2 * Math.PI));
          x = xCenter + (-Math.sin(radAngle + phi) * r1);
          y = yCenter + (+Math.cos(radAngle + phi) * r1);
          points[i] = new Point(x, y);
@@ -803,7 +807,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       Point[] points = new Point[numOfItems];
 
       double r1 = (yCenter - (yCenter - offset - ((item.getY() - yLowerBound) / yRange) * range));
-      double phi = Math.toRadians(Helper.clamp(0.0, 360.0, item.getX()));
+      double phi = Math.toRadians(Helper.clamp(0.0, 360.0, item.getX() % 360.0));
       double x = xCenter + (-Math.sin(radAngle + phi) * r1);
       double y = yCenter + (+Math.cos(radAngle + phi) * r1);
       points[0] = new Point(x, y);
@@ -811,7 +815,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       for (int i = 1; i < numOfItems; i++) {
          item = items.get(i);
          r1 = (yCenter - (yCenter - offset - ((item.getY() - yLowerBound) / yRange) * range));
-         phi = Math.toRadians(Helper.clamp(0.0, 360.0, item.getX()));
+         phi = Math.toRadians(Helper.clamp(0.0, 360.0, item.getX() % 360.0));
          x = xCenter + (-Math.sin(radAngle + phi) * r1);
          y = yCenter + (+Math.cos(radAngle + phi) * r1);
          points[i] = new Point(x, y);

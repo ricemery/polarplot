@@ -40,7 +40,6 @@ public class PolarPlotTest extends Application {
     @Override
     public void init() {
         List<XYChartItem> xyItems1 = new ArrayList<>();
-        xyItems1.add(new XYChartItem(0.0, -18.0));
         xyItems1.add(new XYChartItem(25.0, -18.0));
         xyItems1.add(new XYChartItem(25.0, -5.0));
         xyItems1.add(new XYChartItem(32.0, -5.0));
@@ -69,7 +68,6 @@ public class PolarPlotTest extends Application {
         xyItems1.add(new XYChartItem(328.0, -5.0));
         xyItems1.add(new XYChartItem(335.0, -5.0));
         xyItems1.add(new XYChartItem(335.0, -18.0));
-        xyItems1.add(new XYChartItem(360.0, -18.0));
         Helper.orderXYChartItemsByX(xyItems1, Order.ASCENDING);
 
         List<XYChartItem> xyItems2 = new ArrayList<>();
