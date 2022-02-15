@@ -24,6 +24,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
+import java.util.function.BiConsumer;
+
 
 public class PolarPlot<T extends XYItem> extends Region {
     private static final double         PREFERRED_WIDTH  = 400;
@@ -133,6 +135,14 @@ public class PolarPlot<T extends XYItem> extends Region {
 
     public void refresh() { xyPane.redraw(); }
 
+    /**
+     * Passed consumer called onMouseMoved with mouse coordinates in Polar Coordinates.
+     * Left param is r, right coordinate is theta in degrees. Null passed in
+     * params when mouse moving over canvas but NOT over actual polar plot.
+     */
+    public void setMouseMovePolarCoordinatesConsumer(BiConsumer<Double, Double> consumer) {
+        xyPane.setMouseMovePolarCoordinatesConsumer(consumer);
+    }
 
     // ******************** Resizing ******************************************
     private void resize() {

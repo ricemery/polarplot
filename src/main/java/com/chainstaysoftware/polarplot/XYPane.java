@@ -34,15 +34,18 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.RadialGradient;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -50,6 +53,7 @@ import javafx.scene.text.TextAlignment;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.BiConsumer;
 
 
 /**
@@ -97,6 +101,7 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
    private ListProperty<Double> polarYRingValues;
    private PolarTickStep _polarTickStep;
    private ObjectProperty<PolarTickStep> polarTickStep;
+   private BiConsumer<Double, Double> coordinateConsumer;
 
 
    // ******************** Constructors **************************************
@@ -148,6 +153,27 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
 
       canvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
       ctx = canvas.getGraphicsContext2D();
+
+      canvas.setOnMouseMoved(event -> {
+         if (coordinateConsumer == null) {
+            return;
+         }
+
+         final var xCenter = canvas.getWidth() * .5;
+         final var yCenter = canvas.getHeight() * .5;
+         final var radius = (width * .9) * .5;
+         final var x = event.getX() - xCenter;
+         final var y = event.getY() - yCenter;
+         final var lineLength = Math.sqrt(x * x + y * y);
+         if (lineLength <= radius) {
+            final double r = lineLength;
+            final double theta = Math.toDegrees(Math.PI / 2 + Math.atan2(y, x));
+            final double scaledR = getLowerBoundY() + (r * ((getUpperBoundY() - getLowerBoundY()) / radius));
+            coordinateConsumer.accept(scaledR, theta);
+         } else {
+            coordinateConsumer.accept(null, null);
+         }
+      });
 
       getChildren().setAll(canvas);
    }
@@ -623,6 +649,14 @@ public class XYPane<T extends XYItem> extends Region implements ChartArea {
       return false;
    }
 
+   /**
+    * Called onMouseMoved with mouse coordinates in Polar Coordinates. Left param
+    * is r, right coordinate is theta in degrees. Null passed in
+    * params when mouse moving over canvas but NOT over actual polar plot.
+    */
+   public void setMouseMovePolarCoordinatesConsumer(BiConsumer<Double, Double> consumer) {
+      this.coordinateConsumer = consumer;
+   }
 
    // ******************** Draw Chart ****************************************
    protected void redraw() {
