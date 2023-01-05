@@ -1,4 +1,4 @@
-module com.chainstaysoftware.polarplot {
+module com.chainstaysoftware.controls.polarplot {
 
     // Java
     requires java.base;

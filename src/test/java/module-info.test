@@ -5,10 +5,10 @@ org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
 --add-exports
 org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
 --add-opens
-com.chainstaysoftware.polarplot/com.chainstaysoftware.polarplot.tools=org.junit.platform.commons
+com.chainstaysoftware.controls.polarplot/com.chainstaysoftware.polarplot.tools=org.junit.platform.commons
 --add-reads
-com.chainstaysoftware.polarplot=org.junit.platform.commons
+com.chainstaysoftware.controls.polarplot=org.junit.platform.commons
 --add-reads
-com.chainstaysoftware.polarplot=org.junit.jupiter.api
+com.chainstaysoftware.controls.polarplot=org.junit.jupiter.api
 --add-reads
-com.chainstaysoftware.polarplot=org.assertj.core
+com.chainstaysoftware.controls.polarplot=org.assertj.core

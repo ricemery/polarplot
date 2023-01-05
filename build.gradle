@@ -41,7 +41,7 @@ ext {
     buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
 }
 
-group 'com.chainstaysoftware.polarplot'
+group 'com.chainstaysoftware.controls'
 version '1.0-SNAPSHOT'
 
 ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
@@ -78,7 +78,7 @@ jar {
                 'Bundle-Name'           : project.name,
                 'Bundle-License'        : 'https://www.apache.org/licenses/LICENSE-2.0;description=Apache License Version 2.0;link=https://www.eclipse.org/legal/eplfaq.php',
                 'Bundle-Description'    : description,
-                'Bundle-SymbolicName'   : 'com.chainstaysoftware.polarplot',
+                'Bundle-SymbolicName'   : 'com.chainstaysoftware.controls.polarplot',
                 'Export-Package'        : 'com.chainstaysoftware.polarplot, com.chainstaysoftware.polarplot.data, com.chainstaysoftware.polarplot.event, com.chainstaysoftware.polarplot.series, com.chainstaysoftware.polarplot.tools, com.chainstaysoftware.polarplot.transform'
         )
     }
