@@ -18,10 +18,10 @@ package com.chainstaysoftware.polarplot;
 
 import javafx.application.Application;
 import javafx.geometry.Orientation;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.layout.StackPane;
-import javafx.scene.Scene;
 
 
 /**
@@ -33,12 +33,12 @@ public class LegendTest extends Application {
     private Legend legend;
 
     @Override public void init() {
-        LegendItem item1 = new LegendItem(Symbol.CIRCLE, "Item 1", Color.RED, Color.BLACK);
+        LegendItem item1 = new LegendItem(Symbol.CIRCLE, "Item 1 LONG DESCRIPTION", Color.RED, Color.BLACK);
         LegendItem item2 = new LegendItem(Symbol.SQUARE, "Item 2", Color.GREEN, Color.BLACK);
         LegendItem item3 = new LegendItem(Symbol.TRIANGLE, "Item 3", Color.BLUE, Color.BLACK);
 
         legend = new Legend(item1, item2, item3);
-        legend.setOrientation(Orientation.VERTICAL);
+        legend.setOrientation(Orientation.HORIZONTAL);
     }
 
     @Override public void start(Stage stage) {
